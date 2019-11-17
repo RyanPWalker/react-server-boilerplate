@@ -69,7 +69,6 @@
         "csso-webpack-plugin": "^1.0.0-beta.12",
         "eslint": "^6.6.0",
         "eslint-config-react-app": "^5.0.2",
-        "eslint-loader": "^3.0.2",
         "eslint-plugin-import": "^2.18.2",
         "eslint-plugin-react": "^7.16.0",
         "extract-text-webpack-plugin": "^4.0.0-beta.0",

@@ -68,7 +68,7 @@ module.exports = [
                     loader: ['babel-loader']
                 },
                 {
-                    test: /\.less$/,
+                    test: /\.(le|c)ss$/,
                     exclude: /node_modules/,
                     loader: ExtractTextPlugin.extract(
                         [
@@ -132,7 +132,7 @@ module.exports = [
                     loader: ['babel-loader']
                 },
                 {
-                    test: /\.less$/,
+                    test: /\.(le|c)ss$/,
                     exclude: /node_modules/,
                     loader: ExtractTextPlugin.extract(
                         [

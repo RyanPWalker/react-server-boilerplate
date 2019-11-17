@@ -31,32 +31,27 @@ module.exports = [
                     loader: ['babel-loader']
                 },
                 {
-                    test: /\.less$/,
+                    test: /\.(le|c)ss$/,
                     exclude: /node_modules/,
                     use: [
                         MiniCssExtractPlugin.loader,
                         {
                             loader: 'css-loader',
                             options: {
-                                hmr: true,
                                 importLoaders: 1,
-                                modules: true,
+                                modules: {
+                                    localIdentName: '[name]_[local]',
+                                }
                             },
                         },
                         'less-loader'
                     ]
-                },
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: 'eslint-loader'
                 }
             ]
         },
         plugins: [
             new MiniCssExtractPlugin({
               filename: '[name].css',
-              chunkFilename: '[id].css',
               ignoreOrder: false, // Enable to remove warnings about conflicting order
             }),
             new webpack.DefinePlugin({
@@ -89,7 +84,7 @@ module.exports = [
                     loader: ['babel-loader']
                 },
                 {
-                    test: /\.less$/,
+                    test: /\.(le|c)ss$/,
                     exclude: /node_modules/,
                     use: [
                         MiniCssExtractPlugin.loader,
@@ -97,7 +92,9 @@ module.exports = [
                             loader: 'css-loader',
                             options: {
                                 importLoaders: 1,
-                                modules: true,
+                                modules: {
+                                    localIdentName: '[name]_[local]',
+                                }
                             },
                         },
                         'less-loader'
@@ -108,7 +105,6 @@ module.exports = [
         plugins: [
             new MiniCssExtractPlugin({
               filename: '[name].css',
-              chunkFilename: '[id].css',
               ignoreOrder: false, // Enable to remove warnings about conflicting order
             }),
             // new BundleAnalyzerPlugin({ analyzerMode: "static" })
