@@ -20,6 +20,7 @@
         "jest": "clear && jest --coverage",
         "lint": "eslint ./src --fix",
         "run:server": "nodemon -e js,html --watch dist --ignore dist/client.js ./dist/server.js",
+        "run:prodServer": "nodemon -e js,html --watch dist --ignore dist/react-server-boilerplate.0.0.0.min.js ./dist/react-server-boilerplate.server.js",
         "test": "yarn lint && jest"
     },
     "keywords": [

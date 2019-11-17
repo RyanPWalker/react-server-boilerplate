@@ -75,11 +75,10 @@ module.exports = [
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    camelCase: true,
-                                    getLocalIdent: (context, localIdentName, localName) => generateScopedName(localName),
-                                    importLoaders: 1,
-                                    minimize: true,
-                                    modules: true
+                                    importLoaders: 1, // allows you to configure how many loaders before css-loader
+                                    modules: {
+                                        getLocalIdent: (context, localIdentName, localName) => generateScopedName(localName),
+                                    }
                                 }
                             },
                             'less-loader'
@@ -115,7 +114,7 @@ module.exports = [
         },
         entry: {
             client: [
-                'babel-polyfill',
+                // 'babel-polyfill',
                 './src/js/index.js'
             ]
         },
@@ -139,11 +138,10 @@ module.exports = [
                             {
                                 loader: 'css-loader',
                                 options: {
-                                    camelCase: true,
-                                    getLocalIdent: (context, localIdentName, localName) => generateScopedName(localName),
                                     importLoaders: 1,
-                                    minimize: true,
-                                    modules: true
+                                    modules: {
+                                        getLocalIdent: (context, localIdentName, localName) => generateScopedName(localName),
+                                    }
                                 }
                             },
                             'less-loader'
