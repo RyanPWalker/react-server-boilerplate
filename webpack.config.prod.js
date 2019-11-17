@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
 const incstr = require('incstr');
 const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 // const PurgecssPlugin = require('purgecss-webpack-plugin');
@@ -88,11 +88,20 @@ module.exports = [
                 }
             ]
         },
+        optimization: {
+            minimizer: [
+                new TerserJSPlugin({
+                    terserOptions: {
+                        output: {
+                            comments: false,
+                        },
+                    },
+                    extractComments: false,
+                }),
+            ]
+        },
         plugins: [
             new ExtractTextPlugin(`${pkg.name}.${pkg.version}.min.css`),
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('production')
-            })
         ]
     },
 
@@ -143,10 +152,21 @@ module.exports = [
                 }
             ]
         },
+        optimization: {
+            minimizer: [
+                new TerserJSPlugin({
+                    terserOptions: {
+                        output: {
+                            comments: false,
+                        },
+                    },
+                    extractComments: false,
+                }),
+            ]
+        },
         plugins: [
             new ExtractTextPlugin(`${pkg.name}.${pkg.version}.min.css`),
             new CssoWebpackPlugin(),
-            new UglifyJsPlugin(),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('production')
             // }),

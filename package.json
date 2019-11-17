@@ -11,15 +11,6 @@
         "type": "git",
         "url": "https://github.com/RyanPWalker/react-server-boilerplate.git"
     },
-    "keywords": [
-        "Ryan Preston Walker",
-        "Ryan Walker",
-        "FED",
-        "Front End Developer",
-        "React",
-        "JavaScript",
-        "Web Developer"
-    ],
     "scripts": {
         "bounce": "rimraf /node_modules && yarn",
         "build": "webpack --config webpack.config.js --progress",
@@ -31,17 +22,31 @@
         "run:server": "nodemon -e js,html --watch dist --ignore dist/client.js ./dist/server.js",
         "test": "yarn lint && jest"
     },
-    "nodemonConfig": {
-        "delay": "750"
-    },
+    "keywords": [
+        "Ryan Preston Walker",
+        "Ryan Walker",
+        "FED",
+        "Front End Developer",
+        "React",
+        "JavaScript",
+        "Web Developer"
+    ],
     "config": {
         "startupFile": "dist/server.js",
         "port": 80,
         "devPort": 3000
     },
-    "prepush": "test",
-    "jest": {
-        "globals": {}
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "react-hook-form": "^3.27.0",
+        "react-redux": "7.1.3",
+        "redux": "^4.0.1",
+        "redux-promise-middleware": "^6.1.2",
+        "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.7.0",
@@ -82,7 +87,7 @@
         "purgecss-webpack-plugin": "^1.6.0",
         "rimraf": "^3.0.0",
         "style-loader": "1.0.0",
-        "uglifyjs-webpack-plugin": "2.2.0",
+        "terser-webpack-plugin": "^2.2.1",
         "webpack": "4.41.2",
         "webpack-bundle-analyzer": "^3.6.0",
         "webpack-bundle-size-analyzer": "^3.1.0",
@@ -91,22 +96,16 @@
         "webpack-dev-server": "3.9.0",
         "webpack-node-externals": "^1.7.2"
     },
-    "dependencies": {
-        "body-parser": "^1.19.0",
-        "express": "^4.17.1",
-        "react": "^16.12.0",
-        "react-dom": "^16.12.0",
-        "react-hook-form": "^3.27.0",
-        "react-redux": "7.1.3",
-        "redux": "^4.0.1",
-        "redux-promise-middleware": "^6.1.2",
-        "redux-thunk": "^2.3.0",
-        "reselect": "^4.0.0"
+    "nodemonConfig": {
+        "delay": "100"
+    },
+    "jest": {
+        "globals": {}
     },
     "husky": {
-      "hooks": {
-        "pre-commit": "yarn lint",
-        "pre-push": "yarn lint"
-      }
+        "hooks": {
+            "pre-commit": "yarn lint",
+            "pre-push": "yarn lint"
+        }
     }
 }

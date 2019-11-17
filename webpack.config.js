@@ -38,6 +38,7 @@ module.exports = [
                         {
                             loader: 'css-loader',
                             options: {
+                                hmr: true,
                                 importLoaders: 1,
                                 modules: true,
                             },
@@ -109,9 +110,6 @@ module.exports = [
               filename: '[name].css',
               chunkFilename: '[id].css',
               ignoreOrder: false, // Enable to remove warnings about conflicting order
-            }),
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('development')
             }),
             // new BundleAnalyzerPlugin({ analyzerMode: "static" })
         ]
