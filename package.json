@@ -102,5 +102,11 @@
         "redux-promise-middleware": "^6.1.2",
         "redux-thunk": "^2.3.0",
         "reselect": "^4.0.0"
+    },
+    "husky": {
+      "hooks": {
+        "pre-commit": "yarn lint",
+        "pre-push": "yarn lint"
+      }
     }
 }
