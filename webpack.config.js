@@ -2,12 +2,83 @@ const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TerserJSPlugin = require('terser-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+const ENV = process.env.NODE_ENV || 'production';
+const isDev = ENV !== 'production';
+console.log('isDev', isDev);
+
+const sharedModule = {
+    rules: [
+        {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader'
+            }
+        },
+        {
+            test: /\.(le|c)ss$/,
+            use: [
+            MiniCssExtractPlugin.loader,
+            {
+                loader: "css-loader", 
+                options: {
+                    modules: {
+                        localIdentName: '[local]__[hash:base64:5]'
+                    },
+                },
+            },
+            "less-loader",
+            ],
+        },
+        {
+            test: /\.(html)$/,
+            use: {
+                loader: 'html-loader',
+            }
+        }
+    ]
+};
+const sharedPluginsArray = [
+    new webpack.DefinePlugin({
+        // PRODUCTION: JSON.stringify(ENV) === 'production',
+        'process.env.NODE_ENV': JSON.stringify(ENV)
+    }),
+    new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/ }),
+    new MiniCssExtractPlugin({
+        filename: 'client.min.css',
+    }),
+];
+const sharedOptimization = isDev ? {} : {
+    minimizer: [
+        new TerserJSPlugin({
+            terserOptions: {
+                output: {
+                    comments: false,
+                },
+            },
+            extractComments: false,
+        }),
+        new CssMinimizerPlugin({
+            minimizerOptions: {
+                preset: [
+                    'default',
+                    {
+                        discardComments: { removeAll: true },
+                    },
+                ],
+            },
+        }),
+    ],
+};
 
 module.exports = [
     {
         name: 'DEVELOPMENT_SERVER',
-        mode: 'development',
         target: 'node',
         node: {
             __dirname: false
@@ -21,47 +92,13 @@ module.exports = [
             filename: 'server.js',
             publicPath: 'http://localhost:3000'
         },
-        devtool: 'source-map',
         externals: [nodeExternals()],
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: ['babel-loader']
-                },
-                {
-                    test: /\.(le|c)ss$/,
-                    exclude: /node_modules/,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: {
-                                    localIdentName: '[name]_[local]',
-                                }
-                            },
-                        },
-                        'less-loader'
-                    ]
-                }
-            ]
-        },
-        plugins: [
-            new MiniCssExtractPlugin({
-              filename: '[name].css',
-              ignoreOrder: false, // Enable to remove warnings about conflicting order
-            }),
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('development')
-            })
-        ]
+        module: sharedModule,
+        optimization: sharedOptimization,
+        plugins: sharedPluginsArray
     },
     {
         name: 'DEVELOPMENT_CLIENT',
-        mode: 'development',
         target: 'web',
         node: {
             __dirname: false
@@ -70,44 +107,32 @@ module.exports = [
             './src/js/index.js'
         ],
         output: {
-            path: path.join(__dirname, 'dist'),
-            publicPath: 'http://localhost:3000/dist/',
-            filename: 'client.js',
-            chunkFilename: '[id].client.js'
+            filename: 'client.min.js',
         },
-        devtool: 'source-map',
-        module: {
-            rules: [
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    loader: ['babel-loader']
-                },
-                {
-                    test: /\.(le|c)ss$/,
-                    exclude: /node_modules/,
-                    use: [
-                        MiniCssExtractPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                importLoaders: 1,
-                                modules: {
-                                    localIdentName: '[name]_[local]',
-                                }
-                            },
-                        },
-                        'less-loader'
-                    ]
-                },
-            ]
-        },
+        module: sharedModule,
+        optimization: sharedOptimization,
         plugins: [
-            new MiniCssExtractPlugin({
-              filename: '[name].css',
-              ignoreOrder: false, // Enable to remove warnings about conflicting order
-            }),
+            ...sharedPluginsArray,
+            new HtmlWebpackPlugin({
+                filename: 'client.index.html',
+                inject: false,
+                meta: true,
+                minify: {
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    removeRedundantAttributes: true,
+                    useShortDoctype: true,
+                    removeEmptyAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    keepClosingSlash: true,
+                    minifyJS: true,
+                    minifyCSS: true,
+                    minifyURLs: true,
+                },
+                showErrors: false,
+                template: 'src/local/index.html',
+            })
             // new BundleAnalyzerPlugin({ analyzerMode: "static" })
-        ]
+        ],
     }
 ];

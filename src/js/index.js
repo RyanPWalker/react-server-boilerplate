@@ -1,12 +1,12 @@
 import { render } from 'react-dom';
 import React from 'react';
-import Provider from 'react-redux/lib/components/Provider';
+import {Provider} from 'react-redux';
 import configureStore from './redux/configureStore';
 import MyApp from './App';
 import { initialLoadClientData } from './redux/actions/initialState';
 import '../less/main.less';
 
-const state = window.initialFinancingApplicationData;
+const state = window.initialApplicationData;
 const store = configureStore();
 store.dispatch(initialLoadClientData(state));
 
